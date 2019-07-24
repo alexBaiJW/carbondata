@@ -72,7 +72,11 @@ object FieldConverter {
               timeStampFormat, dateFormat, isVarcharType, level + 1))
               .append(delimiter)
           }
-          builder.substring(0, builder.length - delimiter.length())
+          if(builder.length == 0) {
+            builder.toString()
+          } else {
+            builder.substring(0, builder.length - delimiter.length())
+          }
         // First convert the 'key' of Map and then append the keyValueDelimiter and then convert
         // the 'value of the map and append delimiter
         case m: scala.collection.Map[_, _] =>
@@ -87,8 +91,12 @@ object FieldConverter {
               timeStampFormat, dateFormat, isVarcharType, level + 2))
               .append(delimiter)
           }
-          builder.substring(0, builder.length - delimiter.length())
-        case r: org.apache.spark.sql.Row =>
+          if(builder.length == 0) {
+            builder.toString()
+          } else {
+            builder.substring(0, builder.length - delimiter.length())
+          }
+         case r: org.apache.spark.sql.Row =>
           val delimiter = complexDelimiters.get(level)
           val builder = new StringBuilder()
           for (i <- 0 until r.length) {
@@ -96,8 +104,12 @@ object FieldConverter {
               timeStampFormat, dateFormat, isVarcharType, level + 1))
               .append(delimiter)
           }
-          builder.substring(0, builder.length - delimiter.length())
-        case other => other.toString
+          if(builder.length == 0) {
+            builder.toString()
+          } else {
+            builder.substring(0, builder.length - delimiter.length())
+          }
+         case other => other.toString
       }
     }
   }
